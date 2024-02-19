@@ -1,0 +1,123 @@
+{
+    "zaaps": [
+        {
+            "name": "Champs de cania",
+            "location": {
+                "x": -27,
+                "y": -36
+            }
+        },
+        {
+            "name": "Bord de la forêt maléfique",
+            "location": {
+                "x": -1,
+                "y": 13
+            }
+        },
+        {
+            "name": "Château d'Amakna",
+            "location": {
+                "x": 3,
+                "y": -5
+            }
+        },
+        {
+            "name": "Coin des Bouftous",
+            "location": {
+                "x": 5,
+                "y": 7
+            }
+        },
+        {
+            "name": "Plaine des Scarafeuilles",
+            "location": {
+                "x": -1,
+                "y": 24
+            }
+        },
+        {
+            "name": "Port de Madrestam",
+            "location": {
+                "x": 7,
+                "y": -4
+            }
+        },
+        {
+            "name": "Village d'Amakna",
+            "location": {
+                "x": -2,
+                "y": 0
+            }
+        },
+        {
+            "name": "Cité d'Astrub",
+            "location": {
+                "x": 5,
+                "y": -18
+            }
+        },
+        {
+            "name": "Rivage sufokien",
+            "location": {
+                "x": 10,
+                "y": 22
+            }
+        },
+        {
+            "name": "Sufokia",
+            "location": {
+                "x": 13,
+                "y": 26
+            }
+        },
+        {
+            "name": "Coeur immaculé",
+            "location": {
+                "x": -31,
+                "y": -56
+            }
+        },
+        {
+            "name": "La Cuirasse",
+            "location": {
+                "x": -26,
+                "y": 37
+            }
+        },
+        {
+            "name": "Route des Roulottes",
+            "location": {
+                "x": -25,
+                "y": 12
+            }
+        },
+        {
+            "name": "Massif Cania",
+            "location": {
+                "x": -13,
+                "y": -28
+            }
+        },
+        {
+            "name": "Plaine des Porkass",
+            "location": {
+                "x": -5,
+                "y": -23
+            }
+        },
+        {
+            "name": "Plaines Rocheuses",
+            "location": {
+                "x": -17,
+                "y": -47
+            }
+        },
+        {
+            "name": "Routes Rocailleuses",
+            "location": {
+                "x": -20,
+                "y": -20
+            }
+        }
+    ]
+}
