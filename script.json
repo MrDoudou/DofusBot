@@ -1,12 +1,83 @@
 {
-    "jobs": ["orthie", "frene", "ble"],
-    "maps": [
-        [5,7],
-		[0,7],
-		[0,9],
-		[11,9],
-		[11,10],
-		[0,10],
-		[0,9]
+    "jobs": ["orthie", "frene", "ble", "fer"],
+    "actions": [
+        {
+            "type": "move",
+            "coordinates": [2, -4]
+        },
+        {
+            "type": "click",
+            "x": 545,
+            "y": 318
+        },
+		{
+            "type": "click",
+            "x": 793,
+            "y": 246
+        },
+		{
+            "type": "click",
+            "x": 1328,
+            "y": 721
+        },
+		{
+            "type": "click",
+            "x": 536,
+            "y": 777
+        },
+		{
+            "type": "click",
+            "x": 835,
+            "y": 278
+        },
+		{
+            "type": "click",
+            "x": 1368,
+            "y": 754
+        },
+		{
+            "type": "click",
+            "x": 1400,
+            "y": 552
+        },
+		{
+            "type": "click",
+            "x": 1439,
+            "y": 585
+        },
+		{
+            "type": "move",
+            "coordinates": [3, -4]
+        },
+		{
+            "type": "click",
+            "x": 513,
+            "y": 234
+        },
+		{
+            "type": "click",
+            "x": 1142,
+            "y": 454
+        },
+		{
+            "type": "click",
+            "x": 548,
+            "y": 680
+        },
+		{
+            "type": "click",
+            "x": 596,
+            "y": 431
+        },
+		{
+            "type": "click",
+            "x": 1295,
+            "y": 695
+        },
+		{
+            "type": "click",
+            "x": 1280,
+            "y": 732
+        }
     ]
 }

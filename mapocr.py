@@ -22,6 +22,10 @@ def load_zaaps(file_path):
 
 zaaps = load_zaaps('zaap.json')['zaaps']
 
+def click_at_coordinates(x, y):
+    pyautogui.click(x, y)
+    time.sleep(3)  
+
 def find_nearest_zaap(target_coord, zaaps):
     closest_zaap = None
     min_distance = float('inf')
@@ -104,7 +108,7 @@ def click_on_png_and_wait_for_change(png_path, sleep_time, search_region):
     except pyautogui.ImageNotFoundException:
         print("Image not found.")
 
-def specific_actions():
+def banking_Astrub():
 
     pyautogui.press('h')
 
@@ -208,7 +212,7 @@ def check_and_act_on_green_bar():
 
     if is_bar_almost_full(green_bar_region, threshold=80):
         print("Green bar is at least 80% full. Performing specific actions.")
-        specific_actions()
+        banking_Astrub()
     else:
         print("Green bar is not yet 80% full.")
 
@@ -220,37 +224,6 @@ def execute_movements_with_pause(x_movement, y_movement, current_coordinates, jo
     right_region = (1570, 45, 17, 847)
     action_delay = 0.5
 
-    def interact_with_resource(location):
-        pyautogui.click(location)
-        time.sleep(8)
-
-    job_images = {
-        'orthie': {'images': ['ortie/orthie.png'], 'confidence': 0.8},
-        'frene': {'images': ['bois/frene.png', 'bois/frene2.png', 'bois/frene3.png', 'bois/frene4.png'], 'confidence': 0.8},
-        'ble': {'images': ['paysan/ble.png','paysan/ble2.png','paysan/ble3.png'], 'confidence': 0.8}
-    }
-
-    def check_for_and_interact_with_images():
-        for job in jobs:
-            job_info = job_images.get(job, {})
-            for image_name in job_info.get('images', []):
-                interact_with_images(image_name, interact_with_resource, search_region, job_info.get('confidence', 0.8))
-
-    def interact_with_images(image_name, interaction_function, search_region, confidence):
-        while True:
-            found = False
-            try:
-                for location in pyautogui.locateAllOnScreen(image_name, region=search_region, confidence=confidence):
-                    print("Resource Found!")
-                    interaction_function(pyautogui.center(location))
-                    found = True
-                    break
-            except pyscreeze.ImageNotFoundException:
-                pass
-
-            if not found:
-                break
-
     for _ in range(abs(y_movement)):
         expected_coordinates = (current_coordinates[0], current_coordinates[1] + (-1 if y_movement < 0 else 1))
         if y_movement < 0:
@@ -259,8 +232,8 @@ def execute_movements_with_pause(x_movement, y_movement, current_coordinates, jo
             pyautogui.click(x=down_region[0] + down_region[2] // 2, y=down_region[1] + down_region[3] // 2)
         time.sleep(action_delay)
         wait_for_map_change(expected_coordinates)
+        current_coordinates[0], current_coordinates[1] = expected_coordinates
         check_for_and_interact_with_images()
-        current_coordinates = expected_coordinates
 
     for _ in range(abs(x_movement)):
         expected_coordinates = (current_coordinates[0] + (-1 if x_movement < 0 else 1), current_coordinates[1])
@@ -270,35 +243,74 @@ def execute_movements_with_pause(x_movement, y_movement, current_coordinates, jo
             pyautogui.click(x=right_region[0] + right_region[2] // 2, y=right_region[1] + right_region[3] // 2)
         time.sleep(action_delay)
         wait_for_map_change(expected_coordinates)
+        current_coordinates[0], current_coordinates[1] = expected_coordinates
         check_for_and_interact_with_images()
-        current_coordinates = expected_coordinates
+
+def interact_with_resource(location):
+    pyautogui.click(location)
+    time.sleep(8)
+
+job_images = {
+    'orthie': {'images': ['ortie/orthie.png'], 'confidence': 0.8},
+    'frene': {'images': ['bois/frene.png', 'bois/frene2.png', 'bois/frene3.png', 'bois/frene4.png', 'bois/frene5.png'], 'confidence': 0.8},
+    'ble': {'images': ['paysan/ble.png','paysan/ble2.png','paysan/ble3.png','paysan/ble4.png','paysan/ble5.png'], 'confidence': 0.8},
+    'fer': {'images': ['mineur/fer.png','mineur/fer2.png','mineur/fer3.png','mineur/fer4.png','mineur/fer5.png','mineur/fer6.png','mineur/fer7.png','mineur/fer8.png','mineur/fer9.png','mineur/fer10.png'], 'confidence': 0.8}
+}
+
+def check_for_and_interact_with_images():
+    for job in jobs:
+        job_info = job_images.get(job, {})
+        for image_name in job_info.get('images', []):
+            interact_with_images(image_name, interact_with_resource, search_region, job_info.get('confidence', 0.8))
+
+def interact_with_images(image_name, interaction_function, search_region, confidence):
+    while True:
+        found = False
+        try:
+            for location in pyautogui.locateAllOnScreen(image_name, region=search_region, confidence=confidence):
+                print("Resource Found!")
+                interaction_function(pyautogui.center(location))
+                found = True
+                break
+        except pyscreeze.ImageNotFoundException:
+            pass
+
+        if not found:
+            break
 
 script = load_script('script.json')
 jobs = script['jobs']
-map_coordinates = script['maps']
-DISTANCE_THRESHOLD = 20  
-current_coordinates = get_current_coordinates()
-print(f"Starting at: {current_coordinates}")  
+actions = script['actions']
+DISTANCE_THRESHOLD = 20
+
+current_coordinates = list(get_current_coordinates())
 
 if not current_coordinates:
     print("Current coordinates not found.")
     exit()
 
 while True:
-    for target_coordinates in map_coordinates:
-        print(f"Moving to map: {target_coordinates}")
+    for action in actions:
+        if action['type'] == 'move':
+            target_coordinates = action['coordinates']
+            print(f"Moving to map: {target_coordinates}")
 
-        nearest_zaap = find_nearest_zaap(target_coordinates, zaaps)
-        distance = calculate_distance(current_coordinates, target_coordinates)
-        print(f"Distance to target: {distance}, Threshold: {DISTANCE_THRESHOLD}")  
+            nearest_zaap = find_nearest_zaap(target_coordinates, zaaps)
+            distance = calculate_distance(current_coordinates, target_coordinates)
+            print(f"Distance to target: {distance}, Threshold: {DISTANCE_THRESHOLD}")
 
-        if distance > DISTANCE_THRESHOLD:
-            print("Using zaap for long distance.")
-            move_to_target(current_coordinates, target_coordinates, nearest_zaap)
-        else:
-            print("Moving directly for short distance.")
-            x_move, y_move = calculate_movements(current_coordinates, target_coordinates)
-            execute_movements_with_pause(x_move, y_move, current_coordinates, jobs, search_region)
-            current_coordinates = target_coordinates
+            if distance > DISTANCE_THRESHOLD:
+                print("Using zaap for long distance.")
+                move_to_target(current_coordinates, target_coordinates, nearest_zaap)
+            else:
+                print("Moving directly for short distance.")
+                x_move, y_move = calculate_movements(current_coordinates, target_coordinates)
+                execute_movements_with_pause(x_move, y_move, current_coordinates, jobs, search_region)
 
-        check_and_act_on_green_bar()
+        elif action['type'] == 'click':
+            x, y = action['x'], action['y']
+            print(f"Clicking at coordinates: ({x}, {y})")
+            click_at_coordinates(x, y)
+            check_for_and_interact_with_images()  
+
+        check_and_act_on_green_bar()  
